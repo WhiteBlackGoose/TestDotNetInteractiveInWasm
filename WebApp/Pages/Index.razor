@@ -7,17 +7,29 @@ body {
 }
 </style>
 
-<h1>Counter</h1>
+<input class="neat input-box" @bind=@Text style="width: 50%" @onkeypress="args => { if (args.Key[0] is 'E' /*enter*/ ) IncrementCount(); }" />
+<button class="neat submit-button" @onclick="IncrementCount">Aaaa</button>
+<p class="result">
+    <pre>@Result</pre>
+</p>
 
-<p>Current count: @currentCount</p>
 
-<button @onclick="IncrementCount">Click me</button>
-
+@using Microsoft.DotNet.Interactive
+@using Microsoft.DotNet.Interactive.Events
+@using Microsoft.DotNet.Interactive.FSharp
+@using Microsoft.DotNet.Interactive.Commands
+@using Microsoft.DotNet.Interactive.Formatting
 @code {
-    private int currentCount = 0;
-
+    private string Result = "";
+    private string Text = "";
+    
     private void IncrementCount()
     {
-        currentCount++;
+        if (NaiveSharpEval.Executor.ExecuteFSharp(Text, out var res))
+            Result = res;
+        else
+            Result = "Error!";
     }
+
+    private
 }
